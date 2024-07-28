@@ -1,32 +1,28 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Common;
-
 public static class DateTimeExtension
 {
-    public static DateTime TehranToUtc(this DateTime input) => input.Add(-new TimeSpan(3, 30, 0));
-    public static DateTime UtcToTehran(this DateTime input) => input.Add(new TimeSpan(3, 30, 0));
+    public static DateTime TehranToUtc(this DateTime date) => date.Add(-new TimeSpan(3, 30, 0));
+    public static DateTime UtcToTehran(this DateTime date) => date.Add(new TimeSpan(3, 30, 0));
 
-    public static string DatePersian(this DateTime input)
+    public static TimeOnly TehranToUtc(this TimeOnly time) => time.Add(-new TimeSpan(3, 30, 0));
+    public static TimeOnly UtcToTehran(this TimeOnly time) => time.Add(new TimeSpan(3, 30, 0));
+    
+    public static DateOnly GetDateOnly(this DateTime date) => DateOnly.FromDateTime(date);
+    public static TimeOnly GetTimeOnly(this TimeOnly time) => TimeOnly.FromDateTime(time);
+
+    public static string ToPersianDate(this DateTime date)
     {
         var persianCalendar = new PersianCalendar();
+        int year = persianCalendar.GetYear(date);
+        int month = persianCalendar.GetMonth(date);
+        int day = persianCalendar.GetDayOfMonth(date);
 
-        int year = persianCalendar.GetYear(input);
-        int month = persianCalendar.GetMonth(input);
-        int day = persianCalendar.GetDayOfMonth(input);
-
-        var result= $"{year}/{month:D2}/{day:D2}";
-
-        return Util.Persian.Number(result);
-    }
-
-    public static string DayOfWeekPersian(this DateTime input)
-    {
-        string[] persianWeekDays = ["شنبه", "یک‌شنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنج‌شنبه", "جمعه"];
-
-        var dayOfWeek = input.DayOfWeek;
-        var persianDayOfWeek = persianWeekDays[(int)dayOfWeek];
-        return persianDayOfWeek;
+        var persianDate = $"{year}/{month:D2}/{day:D2}";
+        return Util.Persian.Number(persianDate);
     }
 }
 

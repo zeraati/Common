@@ -1,5 +1,5 @@
-﻿using System.Globalization;
-using System.Text;
+﻿using System.Text;
+using System.Globalization;
 
 namespace Common;
 public static partial class Util
@@ -19,8 +19,8 @@ public static partial class Util
 
             return result.ToString();
         }
-
         public static string Number(int input) => Number(input.ToString());
+
 
         public static string ToLatinNumber(string input)
         {
@@ -31,13 +31,26 @@ public static partial class Util
             for (int i = 0; i < persian.Length; i++) result = result.Replace(persian[i], latin[i]);
             return result;
         }
-
         public static string ToLatinNumber(int input) => ToLatinNumber(input.ToString());
+
 
         public static string Money(int input)
         {
             var result = input.ToString("N0", new CultureInfo("fa-IR"));
             return Number(result) + " تومان";
+        }
+
+        public static DateTime PersianToGregorian(string persianDate)
+        {
+            var persianCalendar = new PersianCalendar();
+
+            var dateParts = persianDate.Split(['/','-']);
+            int year = int.Parse(dateParts[0]);
+            int month = int.Parse(dateParts[1]);
+            int day = int.Parse(dateParts[2]);
+
+            var gregorianDate = persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+            return gregorianDate;
         }
     }
 }
