@@ -52,5 +52,19 @@ public static partial class Util
             var gregorianDate = persianCalendar.ToDateTime(year, month, day, 0, 0, 0, 0);
             return gregorianDate;
         }
+
+        public static DayOfWeekPersianEnum? ToDayOfWeek(string dayName)
+        {
+            if(dayName== "شنبه") return DayOfWeekPersianEnum.شنبه;
+            if(dayName== "يکشنبه") return DayOfWeekPersianEnum.يکشنبه;
+            if(dayName== "دوشنبه") return DayOfWeekPersianEnum.دوشنبه;
+            if(dayName== "سه‌شنبه") return DayOfWeekPersianEnum.سهشنبه;
+            if(dayName== "سه شنبه") return DayOfWeekPersianEnum.سهشنبه;
+            if(dayName== "چهارشنبه") return DayOfWeekPersianEnum.چهارشنبه;
+            if(dayName== "پنجشنبه") return DayOfWeekPersianEnum.پنجشنبه;
+            if(dayName== "جمعه")return DayOfWeekPersianEnum.جمعه;
+
+            return null;
+        }
     }
 }
