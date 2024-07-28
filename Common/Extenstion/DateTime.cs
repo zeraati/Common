@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using System.Globalization;
 
 namespace Common;
 public static class DateTimeExtension
@@ -12,7 +10,7 @@ public static class DateTimeExtension
     public static TimeOnly UtcToTehran(this TimeOnly time) => time.Add(new TimeSpan(3, 30, 0));
     
     public static DateOnly GetDateOnly(this DateTime date) => DateOnly.FromDateTime(date);
-    public static TimeOnly GetTimeOnly(this TimeOnly time) => TimeOnly.FromDateTime(time);
+    public static TimeOnly GetTimeOnly(this DateTime date) => TimeOnly.FromDateTime(date);
 
     public static string ToPersianDate(this DateTime date)
     {
