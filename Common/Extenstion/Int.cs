@@ -16,5 +16,7 @@ public static class IntExtension
 
         return result.ToString();
     }
+    public static bool IsEven(this int input) => input > 0 && input % 2 == 0;
+    public static bool IsEven(this int? input) => input.GetValueOrDefault().IsEven();
 }
 
