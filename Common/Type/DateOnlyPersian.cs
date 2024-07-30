@@ -14,6 +14,9 @@ public partial class CommonType
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
+
+        public string ToString(char separator = '-',string? format="D2")
+            => $"{Year}{separator}{Month.ToString(format)}{separator}{Day.ToString(format)}";
     }
 }
 
