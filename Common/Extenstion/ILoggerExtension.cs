@@ -22,7 +22,7 @@ public static class ILoggerExtension
         if (string.IsNullOrEmpty(message)) message = ", " + message;
         message = $"{logMessage} {@class} {message}";
 
-        if (request != null) message += ", Request: " + Util.Json.Serialize(request);
+        if (request != null) message += ", Request: " + Common.Util.Json.Serialize(request);
 
         logger.Log(LogLevel.Information, message);
     }
