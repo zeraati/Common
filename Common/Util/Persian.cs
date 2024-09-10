@@ -24,15 +24,12 @@ public static partial class Util
 
         public static string ToLatinNumber(string input)
         {
-            var result = "";
             char[] persian = { '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹' };
             char[] latin = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
-            for (int i = 0; i < persian.Length; i++) result = result.Replace(persian[i], latin[i]);
-            return result;
+            for (int i = 0; i < persian.Length; i++) input = input.Replace(persian[i], latin[i]);
+            return input;
         }
-        public static string ToLatinNumber(int input) => ToLatinNumber(input.ToString());
-
 
         public static string Money(int input)
         {
