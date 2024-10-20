@@ -1,35 +1,62 @@
-﻿using System.Diagnostics;
+﻿using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace Microsoft.Extensions.Logging;
 public static class ILoggerExtension
 {
-    public static void LogInformationCustom<T>(this ILogger<T> logger, LogMessage logMessage) => LogInformation(logger, logMessage);
-
-    public static void LogInformationCustom<T>(this ILogger<T> logger, LogMessage logMessage, string message) => LogInformation(logger, logMessage, message, null);
-    public static void LogInformationCustom<T>(this ILogger<T> logger, LogMessage logMessage, object request) => LogInformation(logger, logMessage, null, request);
-    public static void LogInformationCustom<T>(this ILogger<T> logger, LogMessage logMessage, string message, object? request = null) => LogInformation(logger, logMessage, message, request);
-
-    public static void LogInformationCustom<T>(this ILogger<T> logger, LogMessage logMessage, string message, Stopwatch stopwatch)
+    public static void LogDebugCustom(this ILogger logger, object obj, bool jsonIndented = true
+        , [CallerArgumentExpression(nameof(obj))] string param = "", [CallerMemberName] string callMember = "")
     {
-        message += $" in {stopwatch.ElapsedMilliseconds} ms";
-        LogInformation(logger, logMessage, message);
+        logger.LogDebug(CreatMessage(obj, param, callMember, jsonIndented:jsonIndented));
     }
 
-    private static void LogInformation<T>(ILogger<T> logger, LogMessage logMessage, string? message = null, object? request = null)
+    public static void LogErrorCustom(this ILogger logger, object obj, bool jsonIndented = true, string descriptor = null,
+        [CallerArgumentExpression(nameof(obj))] string param = "", [CallerMemberName] string callMember = "")
     {
-        var @class = typeof(T)!.Name.Replace("`2", "");
-
-        if (string.IsNullOrEmpty(message)) message = ", " + message;
-        message = $"{logMessage} {@class} {message}";
-
-        if (request != null) message += ", Request: " + Common.Util.Json.Serialize(request);
-
-        logger.Log(LogLevel.Information, message);
+        logger.LogError(CreatMessage(obj, param, callMember, descriptor, jsonIndented));
     }
-}
 
-public enum LogMessage
-{
-    Handling,
-    Handled
+    private static string CreatMessage(object obj, string param, string callMember, string descriptor = null, bool jsonIndented = true)
+    {
+        var messageLog = new StringBuilder();
+        messageLog.AppendLine($"Method:{descriptor ?? callMember} - Date:{DateTime.Now}");
+
+        var jsonObj = ToJson(obj, jsonIndented);
+        if (param == jsonObj) messageLog.AppendLine(jsonObj);
+        else messageLog.AppendLine($"Param({param}): {jsonObj}");
+
+        return messageLog.ToString() + "\n";
+    }
+
+    private static string ToJson(object obj, bool jsonIndented = true, string descriptor = null)
+    {
+        if (obj == null) return "";
+        if (obj is string) return (obj as string)!;
+        if (obj is Exception)
+        {
+            if(obj is HttpRequestException) return (obj as HttpRequestException)!.Message;
+            return obj.ToString()!;
+        }
+        if (obj.ToString()!.StartsWith("{") || obj.ToString()!.StartsWith("[")) return obj.ToString()!;
+
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            MaxDepth = 16,
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            WriteIndented = jsonIndented
+        };
+
+        try
+        {
+            var json = JsonSerializer.Serialize(obj, options);
+            return json;
+        }
+        catch (Exception exception)
+        {
+            return exception.ToString();
+        }
+    }
 }
