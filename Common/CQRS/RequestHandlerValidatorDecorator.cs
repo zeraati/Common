@@ -11,9 +11,9 @@ public class RequestHandlerValidatorDecorator<TRequest, TResult>
         _validator = validator;
     }
 
-    public async Task<TResult> Handle(TRequest command, CancellationToken cancellationToken)
+    public async Task<TResult> Handle(TRequest command, CancellationToken cancellation)
     {
-        if (_validator != null) await _validator.Validate(command);
-        return await _decoratedHandler.Handle(command, cancellationToken);
+        if (_validator != null) await _validator.Validate(command,cancellation);
+        return await _decoratedHandler.Handle(command, cancellation);
     }
 }
