@@ -6,8 +6,19 @@ public static partial class Util
 {
     public static class Json
     {
-        public static string? Serialize(object obj)
-            => obj != null ? Newtonsoft.Json.JsonConvert.SerializeObject(obj) : null;
+        public static string? Serialize(object? obj)
+        {
+            if (obj == null) return null;
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            return json;
+        }
+
+        public static TData? Deserialize<TData>(string? jsonData)
+        {
+            if (jsonData == null) return default;
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<TData>(jsonData);
+            return json;
+        }
     }
 
     public static string AddDepthToJson(string json)

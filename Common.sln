@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{1F8EEA52-647A-4055-9DD4-465EC8EC07C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotCommon", "BotCommon\BotCommon.csproj", "{0E5A6BC3-AD08-4CEC-8122-E830F07D69C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonBot", "CommonBot\CommonBot.csproj", "{8A17E069-E6DC-413B-B934-21E0FE1FAFFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{1F8EEA52-647A-4055-9DD4-465EC8EC07C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F8EEA52-647A-4055-9DD4-465EC8EC07C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F8EEA52-647A-4055-9DD4-465EC8EC07C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E5A6BC3-AD08-4CEC-8122-E830F07D69C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E5A6BC3-AD08-4CEC-8122-E830F07D69C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E5A6BC3-AD08-4CEC-8122-E830F07D69C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E5A6BC3-AD08-4CEC-8122-E830F07D69C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A17E069-E6DC-413B-B934-21E0FE1FAFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A17E069-E6DC-413B-B934-21E0FE1FAFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A17E069-E6DC-413B-B934-21E0FE1FAFFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A17E069-E6DC-413B-B934-21E0FE1FAFFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
