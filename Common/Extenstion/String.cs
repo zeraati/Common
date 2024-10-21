@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Common;
 public static class StringExtension
@@ -15,22 +16,5 @@ public static class StringExtension
         return input;
     }
 
-    public static string CamelCaseToKebabCase(this string input)
-    {
-        var builder = new StringBuilder();
-        bool caseFlag = false;
-
-        for (int i = 0; i < input.Length; ++i)
-        {
-            char c = input[i];
-            if (c == '-') caseFlag = true;
-            else if (caseFlag)
-            {
-                builder.Append(char.ToUpper(c));
-                caseFlag = false;
-            }
-            else builder.Append(char.ToLower(c));
-        }
-        return builder.ToString();
-    }
+    public static string CamelCaseToKebabCase(this string input)=> Regex.Replace(input, "(?<!^)([A-Z])", "-$1").ToLower();
 }
