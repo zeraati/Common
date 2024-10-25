@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace Common;
@@ -6,10 +6,15 @@ public static partial class Util
 {
     public static class Json
     {
-        public static string? Serialize(object? obj)
+        public static string? Serialize(object? obj, bool nullIgnore = false)
         {
             if (obj == null) return null;
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+
+            var setting = new JsonSerializerSettings
+            {
+                NullValueHandling = nullIgnore == true ? NullValueHandling.Ignore : NullValueHandling.Include
+            };
+            var json = JsonConvert.SerializeObject(obj,setting);
             return json;
         }
 
@@ -26,7 +31,7 @@ public static partial class Util
         if (string.IsNullOrEmpty(json)) return json;
 
         var document = JsonDocument.Parse(json);
-        var result = JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
+        var result = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
         return result;
     }
 }

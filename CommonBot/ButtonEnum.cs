@@ -2,7 +2,6 @@
 using Telegram.Bot;
 
 namespace NozarfBot;
-
 public static class ButtonEnum
 {
     public static readonly ButtonEnumItem PlaceOrder = new("ثبت سفارش", nameof(PlaceOrder).CamelCaseToKebabCase());

@@ -4,7 +4,7 @@ public class JsonFileDatabase<TData>(string fileName)
     public List<TData> Data = [];
     private readonly string _fileName = fileName + ".json";
 
-    public async Task Save() => await File.WriteAllTextAsync(_fileName, Data.ToJson());
+    public async Task Save() => await File.WriteAllTextAsync(_fileName, Data.ToJson(nullIgnore:true));
     public async Task Add(TData data)
     {
         Data.Add(data);
