@@ -15,5 +15,4 @@ public class Common
         bot.OnUpdate += updateHandler;
     }
 
-    public static TimeOnly TimeOnlyNow => TimeOnly.FromDateTime(DateTime.Now);
 }
