@@ -2,7 +2,7 @@
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Telegram.Bot;
-public static class TelegramBotClientExtension
+public static partial class ClientExtention
 {
     public static async Task<Message?> SendButton(this ITelegramBotClient bot, ButtonCommand sendButtonCommand)
     {
