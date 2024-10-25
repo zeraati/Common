@@ -17,6 +17,21 @@ public static partial class ClientExtention
         var sent = await bot.SendTextMessageAsync(sendButtonCommand.ChatId, sendButtonCommand.Title, replyMarkup: inlineMarkup);
         return sent;
     }
+
+    public static async Task<Message?> SendRealButton(this ITelegramBotClient bot, ButtonCommand sendButtonCommand)
+    {
+        var replyMarkup = new ReplyKeyboardMarkup(true);
+        foreach (var buttonCommand in sendButtonCommand.ButtonCommands)
+        {
+            replyMarkup.AddButton(buttonCommand.Text);
+        }
+
+        var sent = await bot.SendTextMessageAsync(sendButtonCommand.ChatId,sendButtonCommand.Title, replyMarkup: replyMarkup);
+        return sent;
+    }
+
+
+
 }
 
 public record ButtonCommand(long ChatId, string Title, ButtonEnumItem[] ButtonCommands);

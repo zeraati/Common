@@ -17,4 +17,5 @@ public static class StringExtension
     }
 
     public static string CamelCaseToKebabCase(this string input)=> Regex.Replace(input, "(?<!^)([A-Z])", "-$1").ToLower();
+    public static string Value(this string? input) => input ?? "";
 }
