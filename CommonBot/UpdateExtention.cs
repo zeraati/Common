@@ -3,9 +3,9 @@
 namespace Telegram.Bot;
 public static partial class UpdateExtention
 {
-    public static UpdateInfoResult Info(this Update update)
+    public static MessageInfoResult Info(this Update update)
     {
-        var result=new UpdateInfoResult();
+        var result=new MessageInfoResult();
 
         if (update.CallbackQuery != null)
         {
@@ -15,10 +15,4 @@ public static partial class UpdateExtention
 
         return result;
     }
-}
-
-public class UpdateInfoResult
-{
-    public long ChatId { get;set; }
-    public string Data { get; set; } = "";
 }
