@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Restore dependencies
-        run: dotnet restore -s https://nexus.tasaheel.org/repository/nuget-hosted/ --s https://api.nuget.org/v3/index.json
+        run: dotnet restore --source https://nexus.tasaheel.org/repository/nuget-hosted/ --source https://api.nuget.org/v3/index.json
       - name: Build the project
         run: dotnet build --configuration Release --no-restore
       - name: Pack the project
