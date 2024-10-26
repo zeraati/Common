@@ -3,7 +3,7 @@ name: Publish NuGet Package
 on:
   push:
     branches:
-      - master  # تغییر به نام شاخه‌ی اصلی شما، اگر متفاوت است
+      - master
 
 jobs:
   publish:
