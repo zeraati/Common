@@ -14,6 +14,7 @@ public class HttpRequestService
     private readonly HttpClient _httpClient;
     private readonly ILogger<HttpRequestService> _logger;
 
+#pragma warning disable CS8618
     public HttpRequestService(
         HttpClient httpClient,
         IServiceProvider serviceProvider,

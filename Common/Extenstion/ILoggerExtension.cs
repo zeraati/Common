@@ -18,7 +18,7 @@ public static class ILoggerExtension
         logger.LogError(CreatMessage(obj, param, callMember, descriptor, jsonIndented));
     }
 
-    private static string CreatMessage(object obj, string param, string callMember, string descriptor = null, bool jsonIndented = true)
+    private static string CreatMessage(object obj, string param, string callMember, string? descriptor = null, bool jsonIndented = true)
     {
         var messageLog = new StringBuilder();
         messageLog.AppendLine($"Method:{descriptor ?? callMember} - Date:{DateTime.Now}");
