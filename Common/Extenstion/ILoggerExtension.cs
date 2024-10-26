@@ -12,7 +12,7 @@ public static class ILoggerExtension
         logger.LogDebug(CreatMessage(obj, param, callMember, jsonIndented:jsonIndented));
     }
 
-    public static void LogErrorCustom(this ILogger logger, object obj, bool jsonIndented = true, string descriptor = null,
+    public static void LogErrorCustom(this ILogger logger, object obj, bool jsonIndented = true, string? descriptor = null,
         [CallerArgumentExpression(nameof(obj))] string param = "", [CallerMemberName] string callMember = "")
     {
         logger.LogError(CreatMessage(obj, param, callMember, descriptor, jsonIndented));
@@ -30,7 +30,7 @@ public static class ILoggerExtension
         return messageLog.ToString() + "\n";
     }
 
-    private static string ToJson(object obj, bool jsonIndented = true, string descriptor = null)
+    private static string ToJson(object obj, bool jsonIndented = true, string? descriptor = null)
     {
         if (obj == null) return "";
         if (obj is string) return (obj as string)!;
