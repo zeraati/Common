@@ -48,6 +48,7 @@
 		<None Update="icon.png">
 			<PackagePath>\</PackagePath>
 			<Pack>True</Pack>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="README.md">
 		  <Pack>True</Pack>
