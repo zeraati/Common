@@ -1,12 +1,16 @@
 name: Publish NuGet Package
+
 on:
   push:
     branches:
-      - master
+      - master  # تغییر به نام شاخه‌ی اصلی شما، اگر متفاوت است
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_PATH: ./Common
 
     steps:
       - name: Checkout code
@@ -19,15 +23,19 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore --source https://nexus.tasaheel.org/repository/nuget-hosted --source https://api.nuget.org/v3/index.json
+        working-directory: ${{ env.PROJECT_PATH }}
 
       - name: Build the project
         run: dotnet build --configuration Release --no-restore
+        working-directory: ${{ env.PROJECT_PATH }}
 
       - name: Pack the NuGet package
         run: dotnet pack --configuration Release --no-build --output ./output
+        working-directory: ${{ env.PROJECT_PATH }}
 
       - name: Publish the NuGet package
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
           dotnet nuget push "./output/*.nupkg" --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        working-directory: ${{ env.PROJECT_PATH }}
