@@ -26,8 +26,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="ico.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <None Update="icon.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
