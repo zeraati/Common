@@ -32,7 +32,11 @@ public static class SwaggerApplicationBuilderExtension
     public static IApplicationBuilder UseSwaggerCustom(this IApplicationBuilder app)
     {
         app.UseSwagger();
-        app.UseSwaggerUI(option => { option.DefaultModelsExpandDepth(-1); });
+        app.UseSwaggerUI(option => { 
+            option.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+            option.DefaultModelsExpandDepth(-1);
+        });
+
         return app;
     }
 }
