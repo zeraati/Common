@@ -5,23 +5,23 @@ using System.Text.Json.Serialization;
 namespace Csis.Common.Service;
 public class HttpRequest
 {
-    public HttpRequest(string url, HttpMethod method, object content)
+    public HttpRequest(string url, HttpMethod method, object? content = null)
     {
         Url = url;
         Method = method;
         Content = content;
     }
 
-    public string Url { get;}
-    public HttpMethod Method{ get;}
-    public object Content{ get;}
+    public string Url { get; }
+    public HttpMethod Method { get; }
+    public object? Content { get; }
 
     public HttpRequestMessage Create(string baseUrl)
     {
         var baseUri = new Uri(baseUrl);
         var url = new Uri(baseUri, Url);
         var httpRequest = new HttpRequestMessage(Method, url);
-        httpRequest.Content = ToStringContent(Content);
+        if (Content != null) httpRequest.Content = ToStringContent(Content);
         return httpRequest;
     }
 
