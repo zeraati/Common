@@ -9,7 +9,7 @@ public static class DbContextBuilderExtension
 {
     public static WebApplicationBuilder AddDbContext<TContext>(this WebApplicationBuilder builder, bool localForLinux) where TContext : DbContext
     {
-        var connection = builder.Configuration.GetConnectionString("SqlServer");
+        var connection = builder.Configuration.GetConnectionString("SqlServer")!;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             connection = Regex.Replace(connection, @"Server=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3};", "Server=.;");
