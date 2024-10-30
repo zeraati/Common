@@ -14,8 +14,9 @@ public static class DbContextBuilderExtension
         if (locallyInReleaseMode && !Debugger.IsAttached)
         {
             connection = Regex.Replace(connection, @"Server=\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3};", "Server=.;");
-
-            if(Util.OsIsDocker)connection.Replace("Server=.;", "host.docker.internal");
+            connection.Replace("Server=.;", "host.docker.internal");
+            //TODO
+            //if (Util.OsIsDocker)connection.Replace("Server=.;", "host.docker.internal");
         }
 
         builder.Services.AddDbContext<TContext>(options => options.UseSqlServer(connection));

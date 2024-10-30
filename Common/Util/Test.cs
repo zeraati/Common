@@ -7,17 +7,20 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Common;
-public static partial class Test
+public static partial class Util
 {
-    public static async Task<TResult> TestCommandQuery<TProgram, TResult>(string url, HttpMethod method, IBaseRequest? baseRequest = null)
-            where TProgram : class
-            where TResult : ApiResult
+    public static partial class Test
     {
-        var factory = new WebApplicationFactory<TProgram>().WithWebHostBuilder(x => { });
-        var request = new TestClientRequest(url, method, baseRequest);
-        var result = await factory.SendRequest<TProgram,TResult>(request);
-        Assert.Equals(result.Success,true);
-        return result;
+        public static async Task<TResult> CommandQuery<TProgram, TResult>(string url, HttpMethod method, IBaseRequest? baseRequest = null)
+                where TProgram : class
+                where TResult : ApiResult
+        {
+            var factory = new WebApplicationFactory<TProgram>().WithWebHostBuilder(x => { });
+            var request = new TestClientRequest(url, method, baseRequest);
+            var result = await factory.SendRequest<TProgram, TResult>(request);
+            Assert.That(result.Success, Is.EqualTo(true));
+            return result;
+        }
     }
 }
 
@@ -52,4 +55,3 @@ public class TestClientRequest
         return new StringContent(JsonSerializer.Serialize(obj, options), Encoding.UTF8, "application/json");
     }
 }
-
