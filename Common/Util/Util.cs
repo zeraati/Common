@@ -23,7 +23,5 @@ public static partial class Util
 
         return result.ToString();
     }
-
-    public static bool OsIsDocker => File.Exists("/.dockerenv");
 }
 
