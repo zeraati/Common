@@ -6,7 +6,8 @@ public static class SwaggerApplicationBuilderExtension
 {
     public static WebApplicationBuilder AddSwaggerBasicAuthorization(this WebApplicationBuilder builder, string title, string version)
     {
-        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")== "Development") title += " Dev";
+        if (Common.Environment.IsDevelopment()) title += " Dev";
+
         version = "v" + version.Replace("v", "");
         builder.Services.AddSwaggerGen(option =>
         {
