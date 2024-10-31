@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics;
 
 namespace Microsoft.Extensions.DependencyInjection;
 public static class SwaggerApplicationBuilderExtension
 {
     public static WebApplicationBuilder AddSwaggerBasicAuthorization(this WebApplicationBuilder builder, string title, string version)
     {
+        if (Debugger.IsAttached) title += " Dev";
         version = "v" + version.Replace("v", "");
         builder.Services.AddSwaggerGen(option =>
         {
