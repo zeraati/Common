@@ -22,7 +22,7 @@ public class JsonFileDatabase<TData>(string fileName)
         var jsonData = await File.ReadAllTextAsync(_fileName);
         if (!string.IsNullOrEmpty(jsonData))
         {
-            Data = Util.Json.Deserialize<List<TData>>(jsonData)!;
+            Data = Json.Deserialize<List<TData>>(jsonData)!;
         }
     }
 }

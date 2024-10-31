@@ -1,12 +1,9 @@
 ﻿namespace Common;
-public static partial class Util
+public static class String
 {
-    public class String
+    public static TimeOnly ToTimeOnly(string time)
     {
-        public static TimeOnly ToTimeOnly(string time)
-        {
-            var split = time.Split(":");
-            return new TimeOnly(int.Parse(split[0]), int.Parse(split[1]));
-        }
+        var split = time.Split(":");
+        return new TimeOnly(int.Parse(split[0]), int.Parse(split[1]));
     }
 }

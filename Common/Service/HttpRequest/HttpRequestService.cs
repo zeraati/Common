@@ -43,7 +43,7 @@ public class HttpRequestService
         var response = await _httpClient.SendAsync(request.Create(option.BaseUrl));
         _logger.LogDebug("Finished sending http request from {callMember} (status: {status})", callMember, response.StatusCode);
 
-        var resultContent = Util.AddDepthToJson(await response.Content.ReadAsStringAsync());
+        var resultContent = Json.AddDepthToJson(await response.Content.ReadAsStringAsync());
         _logger.LogDebugCustom(resultContent);
         var result = await response.Content.ReadFromJsonAsync<TResult>();
         return result!;

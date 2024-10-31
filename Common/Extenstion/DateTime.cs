@@ -20,7 +20,7 @@ public static class DateTimeExtension
         int day = persianCalendar.GetDayOfMonth(date);
 
         var persianDate = $"{year}/{month:D2}/{day:D2}";
-        return Util.Persian.Number(persianDate);
+        return Persian.Number(persianDate);
     }
 }
 

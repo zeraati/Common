@@ -2,28 +2,25 @@
 using System.Text.Json;
 
 namespace Common;
-public static partial class Util
+public static class Json
 {
-    public static class Json
+    public static string? Serialize(object? obj, bool nullIgnore = false)
     {
-        public static string? Serialize(object? obj, bool nullIgnore = false)
-        {
-            if (obj == null) return null;
+        if (obj == null) return null;
 
-            var setting = new JsonSerializerSettings
-            {
-                NullValueHandling = nullIgnore == true ? NullValueHandling.Ignore : NullValueHandling.Include
-            };
-            var json = JsonConvert.SerializeObject(obj,setting);
-            return json;
-        }
-
-        public static TData? Deserialize<TData>(string? jsonData)
+        var setting = new JsonSerializerSettings
         {
-            if (jsonData == null) return default;
-            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<TData>(jsonData);
-            return json;
-        }
+            NullValueHandling = nullIgnore == true ? NullValueHandling.Ignore : NullValueHandling.Include
+        };
+        var json = JsonConvert.SerializeObject(obj, setting);
+        return json;
+    }
+
+    public static TData? Deserialize<TData>(string? jsonData)
+    {
+        if (jsonData == null) return default;
+        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<TData>(jsonData);
+        return json;
     }
 
     public static string AddDepthToJson(string json)
@@ -35,4 +32,3 @@ public static partial class Util
         return result;
     }
 }
-
