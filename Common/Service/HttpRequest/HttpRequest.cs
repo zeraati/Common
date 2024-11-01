@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Csis.Common.Service;
+namespace Common.Service;
 public class HttpRequest
 {
     public HttpRequest(string url, HttpMethod method, object? content = null)

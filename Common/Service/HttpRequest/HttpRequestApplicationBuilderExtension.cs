@@ -1,4 +1,4 @@
-﻿using Csis.Common.Service;
+﻿using Common.Service;
 
 namespace Microsoft.Extensions.DependencyInjection;
 public static class HttpRequestIServiceCollectionExtension

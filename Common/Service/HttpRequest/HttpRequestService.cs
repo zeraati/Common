@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Configuration;
 
-namespace Csis.Common.Service;
+namespace Common.Service;
 public class HttpRequestService
 {
     public IHttpRequestOption option;

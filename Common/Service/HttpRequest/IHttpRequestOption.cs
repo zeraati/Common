@@ -1,4 +1,4 @@
-﻿namespace Csis.Common.Service;
+﻿namespace Common.Service;
 public interface IHttpRequestOption
 {
     string BaseUrl { get; set; }
