@@ -23,10 +23,5 @@ public static partial class Util
 
         return result.ToString();
     }
-
-    public static long GetLongProperty(object input, string propertyName = "Id")
-    {
-        return (long)input!.GetType().GetProperty(propertyName)!.GetValue(input)!;
-    }
 }
 
