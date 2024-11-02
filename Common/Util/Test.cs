@@ -23,8 +23,10 @@ public static partial class Test
 
     public static async Task CompareGetAllResul<TProgram,TQueryResult>(string baseUrl, object? command, long crateId) where TProgram : class
     {
+        if (!baseUrl.Contains("GetAll")) baseUrl += "/GetAll";
+
         var getAllResult = (await Test.CommandQuery<TProgram, ApiResult<TQueryResult[]>>
-            (baseUrl + "/GetAll", HttpMethod.Get)).Data!;
+            (baseUrl, HttpMethod.Get)).Data!;
 
         if (command != null)
         {
