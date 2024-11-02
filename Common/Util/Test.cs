@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System.Text;
 using NUnit.Framework;
+using FluentAssertions;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
@@ -18,6 +19,23 @@ public static partial class Test
         var result = await factory.SendRequest<TProgram, TResult>(request);
         Assert.That(result.Success, Is.EqualTo(true));
         return result;
+    }
+
+    public static async Task CompareGetAllResul<TProgram,TQueryResult>(string baseUrl, object? command, long crateId) where TProgram : class
+    {
+        var getAllResult = (await Test.CommandQuery<TProgram, ApiResult<TQueryResult[]>>
+            (baseUrl + "/GetAll", HttpMethod.Get)).Data!;
+
+        if (command != null)
+        {
+            var queryResult = getAllResult.Single(result => Util.GetLongProperty(result!) == crateId);
+            command.Should().BeEquivalentTo(queryResult, option => option.Excluding(info => info.Name == nameof(BaseEntity.Id)));
+        }
+        else
+        {
+            var queryResult = getAllResult.SingleOrDefault(result => Util.GetLongProperty(result!) == crateId);
+            Assert.That(queryResult, Is.Null);
+        }
     }
 }
 
