@@ -3,7 +3,7 @@
 namespace Microsoft.Extensions.Logging;
 public static partial class ILoggerExtension
 {
-    private static string CreatMessage(Guid? traceId, object obj, string param, string callMember, string? descriptor = null, bool jsonIndented = true)
+    private static string CreatMessage(string? traceId, object obj, string param, string callMember, string? descriptor = null, bool jsonIndented = true)
     {
         var messageLog = new StringBuilder();
         messageLog.AppendLine($"TraceId:{traceId}");

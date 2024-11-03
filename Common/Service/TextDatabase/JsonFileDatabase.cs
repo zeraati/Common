@@ -1,4 +1,6 @@
-﻿namespace Common.Service.TextDatabase;
+﻿using Newtonsoft.Json;
+
+namespace Common.Service.TextDatabase;
 public class JsonFileDatabase<TData>(string fileName)
 {
     public List<TData> Data = [];

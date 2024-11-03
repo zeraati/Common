@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace Common;
+namespace Newtonsoft.Json;
 public static class Json
 {
     public static string? Serialize(object? obj, bool nullIgnore = false)
@@ -30,5 +29,13 @@ public static class Json
         var document = JsonDocument.Parse(json);
         var result = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
         return result;
+    }
+
+    public static object TryToJsonDocument(string input)
+    {
+        if(string.IsNullOrEmpty(input))return input;
+
+        try{return JsonDocument.Parse(input);}
+        catch (Exception){return input;}
     }
 }
