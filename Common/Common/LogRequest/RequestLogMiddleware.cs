@@ -7,11 +7,14 @@ public class RequestLogMiddleware
 {
     private readonly bool _logRequest;
     private readonly RequestDelegate _next;
+    private readonly IHttpContextAccessor _contextAccessor;
     private readonly ILogger<RequestLogMiddleware> _logger;
-    public RequestLogMiddleware(RequestDelegate next, ILogger<RequestLogMiddleware> logger, IConfiguration configuration)
+    public RequestLogMiddleware(RequestDelegate next, ILogger<RequestLogMiddleware> logger, 
+        IConfiguration configuration, IHttpContextAccessor contextAccessor)
     {
         _next = next;
         _logger = logger;
+        _contextAccessor = contextAccessor;
         _logRequest = configuration.GetValue<bool>("Logging:RequestLogging:Active");
     }
 
@@ -19,7 +22,7 @@ public class RequestLogMiddleware
     {
         if (_logRequest)
         {
-            var traceId=Guid.NewGuid();
+            var traceId=_contextAccessor.GetTraceId();
 
             context.Request.EnableBuffering();
             var request = context.Request;
