@@ -3,12 +3,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
 namespace Common;
-public class LogRequestMiddleware
+public class RequestLogMiddleware
 {
     private readonly bool _logRequest;
     private readonly RequestDelegate _next;
-    private readonly ILogger<LogRequestMiddleware> _logger;
-    public LogRequestMiddleware(RequestDelegate next, ILogger<LogRequestMiddleware> logger, IConfiguration configuration)
+    private readonly ILogger<RequestLogMiddleware> _logger;
+    public RequestLogMiddleware(RequestDelegate next, ILogger<RequestLogMiddleware> logger, IConfiguration configuration)
     {
         _next = next;
         _logger = logger;
@@ -43,38 +43,4 @@ public class LogRequestMiddleware
         }
         else await _next(context);
     }
-}
-
-#pragma warning disable CS8618
-public class RequestLog
-{
-    public RequestLog(HttpRequest request,string body)
-    {
-        Url = $"({request.Method}){request.Scheme}://{request.Host}{request.Path}";
-        Authorization = request.Headers.Authorization.ToString();
-        Body = Json.AddDepthToJson(body);
-    }
-
-    public string Url { get; }
-    public string Authorization { get; }
-    public string Body { get; }
-    public DateTime Date { get; }= DateTime.UtcNow;
-}
-
-public class ResponseLog
-{
-    public ResponseLog(HttpResponse response, string body,DateTime requestDate)
-    {
-        var now=DateTime.UtcNow;
-
-        StatusCode = response.StatusCode;
-        Body = Json.AddDepthToJson(body);
-        Date = now;
-        Duration = (now - requestDate).Seconds + " seconds";
-    }
-
-    public int StatusCode { get;}
-    public string Body { get; }
-    public DateTime Date { get; }
-    public string Duration { get; }
 }

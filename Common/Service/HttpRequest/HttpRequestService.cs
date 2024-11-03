@@ -1,5 +1,4 @@
-﻿using Common;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -34,17 +33,18 @@ public class HttpRequestService
             authorization.Length == 1 ? new AuthenticationHeaderValue(authorization[0]) :
             new AuthenticationHeaderValue(authorization[0], authorization[1]);
 
-        _logger.LogDebugCustom(option.ApiKey);
-        _logger.LogDebugCustom(option.BaseUrl);
-
         _logger.LogDebug("Sending http request from {callMember}", callMember);
-        _logger.LogDebugCustom(request);
+        var body=request.Content !=null ? request.Content.ToJson()! : "without body";
+        var requestLog=new RequestLog(request.Method,request.Url,option.ApiKey, body);
+        _logger.LogDebugCustom(requestLog);
 
         var response = await _httpClient.SendAsync(request.Create(option.BaseUrl));
         _logger.LogDebug("Finished sending http request from {callMember} (status: {status})", callMember, response.StatusCode);
 
-        var resultContent = Json.AddDepthToJson(await response.Content.ReadAsStringAsync());
-        _logger.LogDebugCustom(resultContent);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var responseLog=new ResponseLog(response.StatusCode, responseBody,requestLog.Date);
+        _logger.LogDebugCustom(requestLog);
+
         var result = await response.Content.ReadFromJsonAsync<TResult>();
         return result!;
     }
