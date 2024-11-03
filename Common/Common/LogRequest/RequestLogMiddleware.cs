@@ -12,7 +12,7 @@ public class RequestLogMiddleware
     {
         _next = next;
         _logger = logger;
-        _logRequest = configuration.GetValue<bool>("Logging:RequestLogging");
+        _logRequest = configuration.GetValue<bool>("Logging:RequestLogging:Active");
     }
 
     public async Task Invoke(HttpContext context)
