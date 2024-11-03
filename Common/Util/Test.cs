@@ -21,7 +21,7 @@ public static partial class Test
         return result;
     }
 
-    public static async Task CompareGetAllResul<TProgram,TQueryResult>(string baseUrl, object? command, long crateId) where TProgram : class
+    public static async Task CompareGetAllResult<TProgram,TQueryResult>(string baseUrl, object? command, long crateId) where TProgram : class
     {
         if (!baseUrl.Contains("GetAll")) baseUrl += "/GetAll";
 
