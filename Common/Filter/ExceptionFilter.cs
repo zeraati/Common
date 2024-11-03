@@ -19,7 +19,7 @@ public class ExceptionFilter : IExceptionFilter
             var result = new ApiResult(success: false, message: MessageResource.UnmanagedException);
             context.Result = new BadRequestObjectResult(result);
             var descriptor = context.ActionDescriptor.DisplayName!;
-            _logger.LogErrorCustom(context.Exception, descriptor: descriptor);
+            _logger.LogErrorCustom(traceId:null,context.Exception, descriptor: descriptor);
         }
     }
 }

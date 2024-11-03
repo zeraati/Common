@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Microsoft.Extensions.Logging;
 public static partial class ILoggerExtension
 {
-    private static string ToJson(object obj, bool jsonIndented = true, string? descriptor = null)
+    private static string ToJson(object obj, bool jsonIndented = true)
     {
         if (obj == null) return "";
         if (obj is string) return (obj as string)!;

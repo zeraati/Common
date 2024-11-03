@@ -36,14 +36,14 @@ public class HttpRequestService
         _logger.LogDebug("Sending http request from {callMember}", callMember);
         var body=request.Content !=null ? request.Content.ToJson()! : "without body";
         var requestLog=new RequestLog(request.Method,request.Url,option.ApiKey, body);
-        _logger.LogDebugCustom(requestLog);
+        _logger.LogDebugCustom(traceId: null, requestLog);
 
         var response = await _httpClient.SendAsync(request.Create(option.BaseUrl));
         _logger.LogDebug("Finished sending http request from {callMember} (status: {status})", callMember, response.StatusCode);
 
         var responseBody = await response.Content.ReadAsStringAsync();
         var responseLog=new ResponseLog(response.StatusCode, responseBody,requestLog.Date);
-        _logger.LogDebugCustom(requestLog);
+        _logger.LogDebugCustom(traceId: null, requestLog);
 
         var result = await response.Content.ReadFromJsonAsync<TResult>();
         return result!;
