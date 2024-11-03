@@ -21,17 +21,20 @@ public static partial class Test
         return result;
     }
 
-    public static async Task CompareGetAllResult<TProgram,TQueryResult>(string baseUrl, object? command, long crateId) where TProgram : class
+    public static async Task CompareGetAllResult<TProgram,TQueryResult>(string baseUrl, object? command, long crateId, string[]? excludingProperty=null)
+        where TProgram : class
     {
         if (!baseUrl.Contains("GetAll")) baseUrl += "/GetAll";
+        if (excludingProperty == null) excludingProperty = ["Id"];
+        else excludingProperty = excludingProperty.Concat(["Id"]).ToArray();
 
-        var getAllResult = (await Test.CommandQuery<TProgram, ApiResult<TQueryResult[]>>
+        var getAllResult = (await CommandQuery<TProgram, ApiResult<TQueryResult[]>>
             (baseUrl, HttpMethod.Get)).Data!;
 
         if (command != null)
         {
             var queryResult = getAllResult.Single(result => Util.GetLongProperty(result!) == crateId);
-            command.Should().BeEquivalentTo(queryResult, option => option.Excluding(info => info.Name == nameof(BaseEntity.Id)));
+            command.Should().BeEquivalentTo(queryResult, option => option.Excluding(info =>excludingProperty.Contains(info.Name)));
         }
         else
         {
