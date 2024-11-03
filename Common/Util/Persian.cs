@@ -48,17 +48,28 @@ public class Persian
         return gregorianDate;
     }
 
-    public static DayOfWeekPersianEnum? ToDayOfWeek(string dayName)
+    public static DayOfWeekEnum? ToDayOfWeek(string dayName)
     {
-        if (dayName == "شنبه") return DayOfWeekPersianEnum.شنبه;
-        if (dayName == "يکشنبه") return DayOfWeekPersianEnum.يکشنبه;
-        if (dayName == "دوشنبه") return DayOfWeekPersianEnum.دوشنبه;
-        if (dayName == "سه‌شنبه") return DayOfWeekPersianEnum.سهشنبه;
-        if (dayName == "سه شنبه") return DayOfWeekPersianEnum.سهشنبه;
-        if (dayName == "چهارشنبه") return DayOfWeekPersianEnum.چهارشنبه;
-        if (dayName == "پنجشنبه") return DayOfWeekPersianEnum.پنجشنبه;
-        if (dayName == "جمعه") return DayOfWeekPersianEnum.جمعه;
+        if (dayName == "شنبه") return DayOfWeekEnum.شنبه;
+        if (dayName == "يکشنبه") return DayOfWeekEnum.يکشنبه;
+        if (dayName == "دوشنبه") return DayOfWeekEnum.دوشنبه;
+        if (dayName == "سه‌شنبه") return DayOfWeekEnum.سهشنبه;
+        if (dayName == "سه شنبه") return DayOfWeekEnum.سهشنبه;
+        if (dayName == "چهارشنبه") return DayOfWeekEnum.چهارشنبه;
+        if (dayName == "پنجشنبه") return DayOfWeekEnum.پنجشنبه;
+        if (dayName == "جمعه") return DayOfWeekEnum.جمعه;
 
         return null;
+    }
+
+    public enum DayOfWeekEnum
+    {
+        شنبه = 0,
+        يکشنبه = 1,
+        دوشنبه = 2,
+        سه‌شنبه = 3,
+        چهارشنبه = 4,
+        پنجشنبه = 5,
+        جمعه = 6
     }
 }
