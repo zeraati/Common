@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Newtonsoft.Json;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 
 namespace Common;
@@ -10,7 +10,7 @@ public class ResponseLog
         var now = DateTime.UtcNow;
 
         StatusCode = $"{statusCode} - {(int)statusCode}";
-        Body = JsonConvert.DeserializeObject(body)!;
+        Body = JsonDocument.Parse(body)!;
         Date = now;
         Duration = (now - requestDate).Seconds + " seconds";
     }
@@ -21,7 +21,7 @@ public class ResponseLog
 
         var statusCode = (HttpStatusCode)response.StatusCode;
         StatusCode = $"{statusCode} - {(int)statusCode}";
-        Body = JsonConvert.DeserializeObject(body)!;
+        Body = JsonDocument.Parse(body)!;
         Date = now;
         Duration = (now - requestDate).Seconds + " seconds";
     }

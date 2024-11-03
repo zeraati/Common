@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 
 namespace Common;
@@ -8,14 +8,14 @@ public class RequestLog
     {
         Url = $"({method}){url}";
         Authorization = authorization;
-        Body = JsonConvert.DeserializeObject(body)!;
+        Body = JsonDocument.Parse(body)!;
     }
 
     public RequestLog(HttpRequest request,string body, bool jsonIndented = true)
     {
         Url = $"({request.Method}){request.Scheme}://{request.Host}{request.Path}";
         Authorization = request.Headers.Authorization.ToString();
-        Body = JsonConvert.DeserializeObject(body)!;
+        Body = JsonDocument.Parse(body)!;
     }
 
     public string Url { get; }
