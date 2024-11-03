@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Net;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace Common;
-
 public class ResponseLog
 {
     public ResponseLog(HttpStatusCode statusCode, string body, DateTime requestDate)
@@ -10,7 +9,7 @@ public class ResponseLog
         var now = DateTime.UtcNow;
 
         StatusCode = $"{statusCode} - {(int)statusCode}";
-        Body = Json.AddDepthToJson(body);
+        Body = body;
         Date = now;
         Duration = (now - requestDate).Seconds + " seconds";
     }
@@ -21,7 +20,7 @@ public class ResponseLog
 
         var statusCode = (HttpStatusCode)response.StatusCode;
         StatusCode = $"{statusCode} - {(int)statusCode}";
-        Body = Json.AddDepthToJson(body);
+        Body = body;
         Date = now;
         Duration = (now - requestDate).Seconds + " seconds";
     }

@@ -23,7 +23,7 @@ public class RequestLogMiddleware
             var request = context.Request;
             var requestBodyLog = await new StreamReader(request.Body).ReadToEndAsync();
             var logRequest = new RequestLog(request, requestBodyLog);
-            _logger.LogDebug(logRequest.ToJson());
+            _logger.LogDebugCustom(logRequest);
 
             context.Request.Body.Position = 0;
             var originalBodyStream = context.Response.Body;
@@ -36,7 +36,7 @@ public class RequestLogMiddleware
 
             var responseBodyLog= await new StreamReader(context.Response.Body).ReadToEndAsync();
             var logResponse = new ResponseLog(context.Response, responseBodyLog, logRequest.Date);
-            _logger.LogDebug(logResponse.ToJson());
+            _logger.LogDebugCustom(logResponse);
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             await responseBody.CopyToAsync(originalBodyStream);
