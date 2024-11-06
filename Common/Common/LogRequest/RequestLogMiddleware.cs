@@ -23,28 +23,29 @@ public class RequestLogMiddleware
         if (_logRequest)
         {
             var traceId=_contextAccessor.GetTraceId();
+            var descriptor = "";
 
             context.Request.EnableBuffering();
             var request = context.Request;
-            var requestBodyLog = await new StreamReader(request.Body).ReadToEndAsync();
-            var logRequest = new RequestLog(request, requestBodyLog);
-            _logger.LogDebugCustom(traceId,logRequest);
+            var requestBody = await new StreamReader(request.Body).ReadToEndAsync();
+            var logRequest = new RequestLog(request, requestBody);
+            _logger.LogDebugCustom(traceId, descriptor,logRequest);
 
             context.Request.Body.Position = 0;
             var originalBodyStream = context.Response.Body;
-            using var responseBody = new MemoryStream();
-            context.Response.Body = responseBody;
+            using var responseBodyStream = new MemoryStream();
+            context.Response.Body = responseBodyStream;
 
             await _next(context);
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
 
-            var responseBodyLog= await new StreamReader(context.Response.Body).ReadToEndAsync();
-            var logResponse = new ResponseLog(context.Response, responseBodyLog, logRequest.Date);
-            _logger.LogDebugCustom(traceId, logResponse);
+            var responseBody= await new StreamReader(context.Response.Body).ReadToEndAsync();
+            var logResponse = new ResponseLog(context.Response, responseBody, logRequest.Date);
+            _logger.LogDebugCustom(traceId, descriptor, logResponse);
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
-            await responseBody.CopyToAsync(originalBodyStream);
+            await responseBodyStream.CopyToAsync(originalBodyStream);
         }
         else await _next(context);
     }

@@ -30,12 +30,4 @@ public static class Json
         var result = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
         return result;
     }
-
-    public static object TryToJsonDocument(string input)
-    {
-        if(string.IsNullOrEmpty(input))return input;
-
-        try{return JsonDocument.Parse(input);}
-        catch (Exception){return input;}
-    }
 }

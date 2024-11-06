@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 
 namespace Common;
 public class RequestLog
@@ -9,18 +8,26 @@ public class RequestLog
     {
         Url = $"({method}){url}";
         Authorization = authorization;
-        Body = Json.TryToJsonDocument(body);
+        Body = TryToJsonDocument(body);
     }
 
     public RequestLog(HttpRequest request,string body, bool jsonIndented = true)
     {
         Url = $"({request.Method}){request.Scheme}://{request.Host}{request.Path}";
         Authorization = request.Headers.Authorization.ToString();
-        Body = Json.TryToJsonDocument(body);
+        Body = TryToJsonDocument(body);
     }
 
     public string Url { get; }
     public string Authorization { get; }
     public object? Body { get; }
     public DateTime Date { get; }= DateTime.UtcNow;
+
+    private static object TryToJsonDocument(string input)
+    {
+        if (string.IsNullOrEmpty(input)) return input;
+
+        try { return JsonDocument.Parse(input); }
+        catch (Exception) { return input; }
+    }
 }
