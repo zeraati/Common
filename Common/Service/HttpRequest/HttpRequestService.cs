@@ -32,6 +32,8 @@ public class HttpRequestService
     {
         var traceId = _httpContextAccessor.GetTraceId();
         var authorization = option.ApiKey.Split(' ');
+        var descriptor = nameof(HttpRequestService);
+        var requestDate = DateTime.UtcNow;
 
         _httpClient.DefaultRequestHeaders.Authorization =
             authorization.Length == 1 ? new AuthenticationHeaderValue(authorization[0]) :
@@ -40,14 +42,14 @@ public class HttpRequestService
         _logger.LogDebug("Sending http request from {callMember}", callMember);
         var body = request.Content != null ? request.Content.ToJson()! : "without body";
         var requestLog = new RequestLog(request.Method, request.Url, option.ApiKey, body);
-        _logger.LogDebugCustom(traceId,"",requestLog);
+        _logger.LogDebugCustom(traceId, "(Request)"+descriptor, requestLog);
 
         var response = await _httpClient.SendAsync(request.Create(option.BaseUrl));
         _logger.LogDebug("Finished sending http request from {callMember} (status: {status})", callMember, response.StatusCode);
 
         var responseBody = await response.Content.ReadAsStringAsync();
-        var responseLog = new ResponseLog(response.StatusCode, responseBody, requestLog.Date);
-        _logger.LogDebugCustom(traceId, "", requestLog);
+        var responseLog = new ResponseLog(response.StatusCode, responseBody,requestDate);
+        _logger.LogDebugCustom(traceId, "(Response)" + descriptor, requestLog);
 
         var result = await response.Content.ReadFromJsonAsync<TResult>();
         return result!;

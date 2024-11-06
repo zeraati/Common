@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
@@ -23,13 +24,13 @@ public class RequestLogMiddleware
         if (_logRequest)
         {
             var traceId=_contextAccessor.GetTraceId();
-            var descriptor = "";
+            var requestDate=DateTime.UtcNow;
 
             context.Request.EnableBuffering();
             var request = context.Request;
-            var requestBody = await new StreamReader(request.Body).ReadToEndAsync();
+            var requestBody =await ToObject(request.Body);
             var logRequest = new RequestLog(request, requestBody);
-            _logger.LogDebugCustom(traceId, descriptor,logRequest);
+            _logger.LogDebugCustom(traceId, "Middleware request", logRequest);
 
             context.Request.Body.Position = 0;
             var originalBodyStream = context.Response.Body;
@@ -40,13 +41,21 @@ public class RequestLogMiddleware
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
 
-            var responseBody= await new StreamReader(context.Response.Body).ReadToEndAsync();
-            var logResponse = new ResponseLog(context.Response, responseBody, logRequest.Date);
-            _logger.LogDebugCustom(traceId, descriptor, logResponse);
+            var responseBody=await ToObject(context.Response.Body);
+            var logResponse = new ResponseLog(context.Response, responseBody, requestDate);
+            _logger.LogDebugCustom(traceId, "Middleware response", logResponse);
 
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             await responseBodyStream.CopyToAsync(originalBodyStream);
         }
         else await _next(context);
+    }
+
+    private async Task<Dictionary<string, object>?> ToObject(Stream input)
+    {
+        var json=await new StreamReader(input).ReadToEndAsync();
+        if (string.IsNullOrEmpty(json)) return null;
+
+        return Json.Deserialize<Dictionary<string, object>>(json)!;
     }
 }

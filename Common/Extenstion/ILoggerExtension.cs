@@ -1,40 +1,36 @@
-﻿using System.Text;
-using Newtonsoft.Json;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
 
-namespace Microsoft.Extensions.Logging;
+namespace Common;
 public static partial class ILoggerExtension
 {
     public static void LogDebugCustom(this ILogger logger, string? traceId, string descriptor,
-        object? paramData = null,[CallerArgumentExpression(nameof(paramData))] string paramName = "")
+        object paramData,[CallerArgumentExpression(nameof(paramData))] string paramName = "")
     {
-        logger.LogDebug(CreatMessage(traceId, descriptor, paramName, ToJson(paramData)));
+        Console.WriteLine("\n==================================================================================\n");
+        logger.LogDebug(CreatContent(traceId, descriptor, paramName, paramData));
+        Console.WriteLine("\n==================================================================================\n");
     }
 
     public static void LogErrorCustom(this ILogger logger, string? traceId, string descriptor,
-        object? paramData = null,[CallerArgumentExpression(nameof(paramData))] string paramName = "")
+        object paramData ,[CallerArgumentExpression(nameof(paramData))] string paramName = "")
     {
-        logger.LogError(CreatMessage(traceId, descriptor, paramName, ToJson(paramData)));
+        Console.WriteLine("\n==================================================================================\n");
+        logger.LogError(CreatContent(traceId, descriptor, paramName, paramData));
+        Console.WriteLine("\n==================================================================================\n");
     }
 
-    private static string CreatMessage(string? traceId, string descriptor, string? paramName, object? paramData)
+    private static string CreatContent(string? traceId, string descriptor, string paramName, object paramData)
     {
-        var messageLog = new StringBuilder();
-        messageLog.AppendLine($"TraceId:{traceId} - Date:{DateTime.Now}");
-        messageLog.AppendLine($"Descriptor:{descriptor}");
-        messageLog.AppendLine($"Param({paramName}): {paramData}");
+        var content = new Dictionary<string, object?>
+        {
+            { nameof(traceId), traceId },
+            { "date", DateTime.UtcNow },
+            { nameof(descriptor), descriptor },
+            { paramName, paramData },
+        };
 
-        return messageLog.ToString() + "\n";
-    }
-
-    private static string? ToJson(this object? input)
-    {
-        if (input ==null) return null;
-
-        var json=Json.Serialize(input)!;
-        var document = JsonDocument.Parse(json);
-        var result = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
-        return result;
+        return JsonConvert.SerializeObject(content,Formatting.Indented);
     }
 }

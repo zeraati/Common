@@ -25,4 +25,5 @@ public enum SqlExceptionNumberEnum
 {
     PrimaryKeyViolation = 2627,
     UniqueConstraint = 2601,
+    ForeignKeyConstraintViolation = 547,
 }

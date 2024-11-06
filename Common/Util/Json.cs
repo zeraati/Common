@@ -30,4 +30,10 @@ public static class Json
         var result = System.Text.Json.JsonSerializer.Serialize(document, new JsonSerializerOptions { WriteIndented = true });
         return result;
     }
+
+    public static JsonDocument AddDepthToJson1(string json)
+    {
+        var document = JsonDocument.Parse(json);
+        return document;
+    }
 }

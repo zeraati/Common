@@ -1,9 +1,8 @@
 ﻿using Common;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.AspNetCore.Mvc.Filters;
 public class ExceptionFilter : IExceptionFilter
@@ -32,19 +31,13 @@ public class ExceptionFilter : IExceptionFilter
         {
             if (efException.InnerException is SqlException sqlException)
             {
-                var exceptionInfo = sqlException.SqlExceptionInfo();
-                _logger.LogErrorCustom(traceId, descriptor,exceptionInfo);
-            }
-                
-            var entries = new Dictionary<string, object>();
-            foreach (var entry in efException.Entries)
-            {
-                var name = entry.Entity.GetType().Name;
-                var data = Json.AddDepthToJson(entry.Entity.ToJson()!);
-                entries.Add(name, data);
+                var exceptionInfo = sqlException.SqlExceptionInfo()!;
+                _logger.LogErrorCustom(traceId, $"({nameof(SqlException)}) {descriptor}",exceptionInfo);
             }
 
-            _logger.LogErrorCustom(traceId, descriptor,entries);
+            var entries = efException.Entries
+                .ToDictionary(entry => entry.Entity.GetType().Name, entry => entry.Entity);
+            _logger.LogErrorCustom(traceId, $"({nameof(DbUpdateException)}) {descriptor}", entries);
         }
 
         else
