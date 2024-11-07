@@ -9,7 +9,7 @@ public static partial class Test
     public static async Task CompareGetAllResult<TProgram,TQueryResult>(string baseUrl,long id,object? command=null, string[]? excludingProperty=null)
         where TProgram : class
     {
-        if (!baseUrl.Contains("GetAll")) baseUrl += "/GetAll";
+        if (!baseUrl.Contains("GetAll")) baseUrl += "GetAll";
         if (excludingProperty == null) excludingProperty = ["Id"];
         else excludingProperty = excludingProperty.Concat(["Id"]).ToArray();
 
