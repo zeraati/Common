@@ -6,7 +6,7 @@ namespace Common;
 public static partial class ILoggerExtension
 {
     public static void LogDebugCustom(this ILogger logger, string? traceId, string descriptor,
-        object paramData,[CallerArgumentExpression(nameof(paramData))] string paramName = "")
+        object paramData, [CallerArgumentExpression(nameof(paramData))] string paramName = "")
     {
         Console.WriteLine("\n==================================================================================\n");
         logger.LogDebug(CreatContent(traceId, descriptor, paramName, paramData));
@@ -14,7 +14,7 @@ public static partial class ILoggerExtension
     }
 
     public static void LogErrorCustom(this ILogger logger, string? traceId, string descriptor,
-        object paramData ,[CallerArgumentExpression(nameof(paramData))] string paramName = "")
+        object paramData, [CallerArgumentExpression(nameof(paramData))] string paramName = "")
     {
         Console.WriteLine("\n==================================================================================\n");
         logger.LogError(CreatContent(traceId, descriptor, paramName, paramData));
@@ -27,10 +27,18 @@ public static partial class ILoggerExtension
         {
             { nameof(traceId), traceId },
             { "date", DateTime.UtcNow },
-            { nameof(descriptor), descriptor },
-            { paramName, paramData },
+            { nameof(descriptor), descriptor }
         };
 
-        return JsonConvert.SerializeObject(content,Formatting.Indented);
+        if (paramData is Exception)
+        {
+            var data = Json.Deserialize<Dictionary<string, object>>(paramData.ToJson())!;
+            data.Remove("StackTraceString");
+            paramData=data;
+        }
+        content.Add(paramName, paramData);
+
+
+        return JsonConvert.SerializeObject(content, Formatting.Indented);
     }
 }

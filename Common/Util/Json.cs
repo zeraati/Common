@@ -18,7 +18,7 @@ public static class Json
     public static TData? Deserialize<TData>(string? jsonData)
     {
         if (jsonData == null) return default;
-        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<TData>(jsonData);
+        var json = JsonConvert.DeserializeObject<TData>(jsonData);
         return json;
     }
 

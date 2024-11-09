@@ -24,9 +24,19 @@ public static partial class Util
         return result.ToString();
     }
 
-    public static long GetLongProperty(object input, string propertyName = "Id")
+    public static bool HasProperty(object input, string propertyName)
     {
-        return (long)input!.GetType().GetProperty(propertyName)!.GetValue(input)!;
+        return input!.GetType().GetProperty(propertyName) != null;
+    }
+
+    public static TResult GetProperty<TResult>(object input, string propertyName)
+    {
+        return (TResult)input!.GetType().GetProperty(propertyName)!.GetValue(input)!;
+    }
+
+    public static void GetProperty<TResult>(object input, string propertyName,TResult value)
+    {
+        input!.GetType().GetProperty(propertyName)!.SetValue(input,value);
     }
 }
 

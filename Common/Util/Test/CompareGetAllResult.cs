@@ -1,5 +1,4 @@
-﻿using MediatR;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,12 +16,12 @@ public static partial class Test
 
         if (command==null)
         {
-            var result = getAll.SingleOrDefault(item => Util.GetLongProperty(item!) == id);
+            var result = getAll.SingleOrDefault(item => Util.GetProperty<long>(item!,nameof(BaseEntity.Id)) == id);
             Assert.That(result, Is.Null);
         }
         else
         {
-            var result = getAll.Single(item => Util.GetLongProperty(item!) == id);
+            var result = getAll.Single(item => Util.GetProperty<long>(item!, nameof(BaseEntity.Id)) == id);
             command.Should().BeEquivalentTo(result, option => option.Excluding(info => excludingProperty.Contains(info.Name)));
         }
     }
