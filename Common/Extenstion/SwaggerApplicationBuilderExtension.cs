@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Builder;
 
 namespace Microsoft.Extensions.DependencyInjection;
 public static class SwaggerApplicationBuilderExtension
