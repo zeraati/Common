@@ -1,6 +1,7 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text.Json;
 
-namespace Newtonsoft.Json;
+namespace Common;
 public static class Json
 {
     public static string? Serialize(object? obj, bool nullIgnore = false)
