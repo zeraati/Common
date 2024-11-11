@@ -9,7 +9,8 @@ public static partial class ILoggerExtension
         object paramData, [CallerArgumentExpression(nameof(paramData))] string paramName = "")
     {
         Console.WriteLine("\n==================================================================================\n");
-        logger.LogDebug(CreatContent(traceId, descriptor, paramName, paramData));
+        var content = CreatContent(traceId, descriptor, paramName, paramData);
+        logger.LogDebug(content);
         Console.WriteLine("\n==================================================================================\n");
     }
 
@@ -17,7 +18,8 @@ public static partial class ILoggerExtension
         object paramData, [CallerArgumentExpression(nameof(paramData))] string paramName = "")
     {
         Console.WriteLine("\n==================================================================================\n");
-        logger.LogError(CreatContent(traceId, descriptor, paramName, paramData));
+        var content = CreatContent(traceId, descriptor, paramName, paramData);
+        logger.LogError(content);
         Console.WriteLine("\n==================================================================================\n");
     }
 
@@ -34,13 +36,20 @@ public static partial class ILoggerExtension
         {
             var data = Json.Deserialize<Dictionary<string, object>>(paramData.ToJson())!;
 
-            //var message = data["Message"];
-            data.Remove("StackTraceString");
+            var stackTrace = data["StackTraceString"]?.ToString();
+            if (!string.IsNullOrEmpty(stackTrace))
+            {
+                data.Remove("StackTraceString");
+                data.Add("StackTraceString", stackTrace);
+            }
+            
             paramData = data;
         }
         content.Add(paramName, paramData);
 
 
-        return JsonConvert.SerializeObject(content, Formatting.Indented);
+        var result= JsonConvert.SerializeObject(content, Formatting.Indented);
+        result = result.Replace("\\r\\n", "\r\n");
+        return result;
     }
 }
