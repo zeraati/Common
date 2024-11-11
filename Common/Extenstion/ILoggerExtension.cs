@@ -33,8 +33,10 @@ public static partial class ILoggerExtension
         if (paramData is Exception)
         {
             var data = Json.Deserialize<Dictionary<string, object>>(paramData.ToJson())!;
+
+            //var message = data["Message"];
             data.Remove("StackTraceString");
-            paramData=data;
+            paramData = data;
         }
         content.Add(paramName, paramData);
 
