@@ -29,26 +29,26 @@ public static partial class ILoggerExtension
         {
             { nameof(traceId), traceId },
             { "date", DateTime.UtcNow },
-            { nameof(descriptor), descriptor }
+            { nameof(descriptor), descriptor },
+            { paramName, paramData}
         };
 
-        if (paramData is Exception)
-        {
-            var data = Json.Deserialize<Dictionary<string, object>>(paramData.ToJson())!;
+        //if (paramData is Exception)
+        //{
+        //    var data = Json.Deserialize<Dictionary<string, object>>(paramData.ToJson())!;
 
-            var stackTrace = data["StackTraceString"]?.ToString();
-            if (!string.IsNullOrEmpty(stackTrace))
-            {
-                data.Remove("StackTraceString");
-                data.Add("StackTraceString", stackTrace);
-            }
-            
-            paramData = data;
-        }
-        content.Add(paramName, paramData);
+        //    var stackTrace = data["StackTraceString"]?.ToString();
+        //    if (!string.IsNullOrEmpty(stackTrace))
+        //    {
+        //        data.Remove("StackTraceString");
+        //        data.Add("StackTraceString", stackTrace);
+        //    }
 
+        //    paramData = data;
+        //}
+        //content.Add(paramName, paramData);
 
-        var result= JsonConvert.SerializeObject(content, Formatting.Indented);
+        var result = JsonConvert.SerializeObject(content, Formatting.Indented);
         result = result.Replace("\\r\\n", "\r\n");
         return result;
     }
