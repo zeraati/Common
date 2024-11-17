@@ -49,7 +49,7 @@ public static partial class ILoggerExtension
         //content.Add(paramName, paramData);
 
         var result = JsonConvert.SerializeObject(content, Formatting.Indented);
-        result = result.Replace("\\r\\n", "\r\n");
+        result = result.Replace("\\r\\n", "\r\n").Replace("\"{", "{").Replace("\\\"", "\"");
         return result;
     }
 }
