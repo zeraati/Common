@@ -18,13 +18,12 @@ public class ExceptionFilter : IExceptionFilter
     public void OnException(ExceptionContext context)
     {
         var traceId = _contextAccessor.GetTraceId();
+        var message = MessageResource.UnmanagedException;
         var descriptor = context.ActionDescriptor.DisplayName!;
 
         if (context.Exception is ApiResultValidation)
         {
-            dynamic result = new ApiResult(success: false, message: context.Exception.Message);
-            result.TraceId = traceId;
-            context.Result = new BadRequestObjectResult(result);
+            message = context.Exception.Message;
         }
 
         if (context.Exception is DbUpdateException efException)
@@ -32,7 +31,7 @@ public class ExceptionFilter : IExceptionFilter
             if (efException.InnerException is SqlException sqlException)
             {
                 var exceptionInfo = sqlException.SqlExceptionInfo()!;
-                _logger.LogErrorCustom(traceId, $"({nameof(SqlException)}) {descriptor}",exceptionInfo);
+                _logger.LogErrorCustom(traceId, $"({nameof(SqlException)}) {descriptor}", exceptionInfo);
             }
 
             var entries = efException.Entries
@@ -42,9 +41,10 @@ public class ExceptionFilter : IExceptionFilter
 
         else
         {
-            var result = new ApiResult(success: false, message: MessageResource.UnmanagedException);
-            context.Result = new BadRequestObjectResult(result);
-            _logger.LogErrorCustom(traceId, descriptor,context.Exception);
+            _logger.LogErrorCustom(traceId, descriptor, context.Exception);
         }
+
+        var result = new ApiResultException(traceId!, message);
+        context.Result = new BadRequestObjectResult(result);
     }
 }

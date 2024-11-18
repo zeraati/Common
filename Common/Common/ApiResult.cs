@@ -24,19 +24,28 @@ public class ApiResult<TData> : ApiResult
 public class ApiResultPaging<TData> : ApiResult<TData>
 {
     public ApiResultPaging(TData data, Paging paging, int totalCount, bool success = true, string? message = null)
-        : base(data,success, message)
+        : base(data, success, message)
     {
         Pagination = new(paging, totalCount);
     }
 
-    public Pagination Pagination { get; set; }
-    
+    public PaginationData Pagination { get; set; }
+
+    public class PaginationData(Paging paging, int totalCount)
+    {
+        public int PageSize { get; } = paging.PageSize;
+        public int PageNumber { get; } = paging.PageNumber;
+        public int TotalCount { get; } = totalCount;
+        public int TotalPages { get; } = (int)Math.Ceiling((double)totalCount / paging.PageSize);
+    }
 }
 
-public class Pagination(Paging paging, int totalCount)
+public class ApiResultException : ApiResult
 {
-    public int PageSize { get; }=paging.PageSize;
-    public int PageNumber { get; } = paging.PageNumber;
-    public int TotalCount { get; }=totalCount;
-    public int TotalPages { get; }= (int)Math.Ceiling((double)totalCount / paging.PageSize);
+    public ApiResultException(string traceId, string? message = null) 
+        : base(success:false, message)
+    {
+        TraceId = traceId;
+    }
+    public string TraceId { get; }
 }
