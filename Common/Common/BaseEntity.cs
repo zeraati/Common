@@ -6,3 +6,5 @@ public class BaseEntity
 
     public DateTime? UpdatedAt { get; protected set; }
 }
+
+public class AggregateRoot : BaseEntity { }
