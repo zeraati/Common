@@ -13,7 +13,7 @@ public static partial class ClientExtention
         var replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]
         {new[] { button }}){ResizeKeyboard = true,OneTimeKeyboard = true};
 
-        await bot.SendTextMessageAsync(
+        await bot.SendMessage(
             chatId: chatId,
             text: "برای اشتراگ گذاری دکمه پایین چت را گلیگ کنید",
             replyMarkup: replyKeyboardMarkup

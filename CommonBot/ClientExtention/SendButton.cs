@@ -14,7 +14,7 @@ public static partial class ClientExtention
                 .AddNewRow();
         }
 
-        var sent = await bot.SendTextMessageAsync(sendButtonCommand.ChatId, sendButtonCommand.Title, replyMarkup: inlineMarkup);
+        var sent = await bot.SendMessage(sendButtonCommand.ChatId, sendButtonCommand.Title, replyMarkup: inlineMarkup);
         return sent;
     }
 
@@ -26,7 +26,7 @@ public static partial class ClientExtention
             replyMarkup.AddButton(buttonCommand.Text);
         }
 
-        var sent = await bot.SendTextMessageAsync(sendButtonCommand.ChatId,sendButtonCommand.Title, replyMarkup: replyMarkup);
+        var sent = await bot.SendMessage(sendButtonCommand.ChatId,sendButtonCommand.Title, replyMarkup: replyMarkup);
         return sent;
     }
 
