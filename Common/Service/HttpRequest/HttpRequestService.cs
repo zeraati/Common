@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 
 namespace Common.Service;
@@ -51,7 +52,10 @@ public class HttpRequestService
         var responseLog = new ResponseLog(response.StatusCode, responseBody,requestDate);
         _logger.LogDebugCustom(traceId, "(Response)" + descriptor, requestLog);
 
-        var result = await response.Content.ReadFromJsonAsync<TResult>();
+        if (!response.IsSuccessStatusCode) throw new RequestFailed("RequestFailed! traceId:" + traceId);
+
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var result = Json.Deserialize<TResult>(responseContent);
         return result!;
     }
 }

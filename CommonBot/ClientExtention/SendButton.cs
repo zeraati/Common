@@ -4,6 +4,9 @@ using Telegram.Bot.Types.ReplyMarkups;
 namespace Telegram.Bot;
 public static partial class ClientExtention
 {
+    public record ButtonCommand(long ChatId, string Title, ButtonEnumItem[] ButtonCommands);
+    public record ButtonEnumItem(string Text, string Data);
+
     public static async Task<Message?> SendButton(this ITelegramBotClient bot, ButtonCommand sendButtonCommand)
     {
         var inlineMarkup = new InlineKeyboardMarkup();
@@ -29,10 +32,4 @@ public static partial class ClientExtention
         var sent = await bot.SendMessage(sendButtonCommand.ChatId,sendButtonCommand.Title, replyMarkup: replyMarkup);
         return sent;
     }
-
-
-
 }
-
-public record ButtonCommand(long ChatId, string Title, ButtonEnumItem[] ButtonCommands);
-public record ButtonEnumItem(string Text, string Data);

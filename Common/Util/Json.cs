@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using System.Text.Json;
 
 namespace Common;
@@ -19,8 +20,17 @@ public static class Json
     public static TData? Deserialize<TData>(string? jsonData)
     {
         if (jsonData == null) return default;
-        var json = JsonConvert.DeserializeObject<TData>(jsonData);
-        return json;
+
+        try
+        {
+            var json = JsonConvert.DeserializeObject<TData>(jsonData);
+            return json;
+        }
+        catch (Exception ex)
+        {
+            throw new JsonDeserializeException("Deserialize To "+typeof(TData).Name,ex);
+        }
+        
     }
 
     public static string AddDepthToJson(string json)
