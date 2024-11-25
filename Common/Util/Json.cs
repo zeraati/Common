@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Common;
 public static class Json
@@ -26,9 +26,10 @@ public static class Json
             var json = JsonConvert.DeserializeObject<TData>(jsonData);
             return json;
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            throw new JsonDeserializeException("Deserialize To "+typeof(TData).Name,ex);
+            var message = "Deserialize To " + typeof(TData).Name;
+            throw new JsonDeserializeException(message, exception);
         }
         
     }
