@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Security.Policy;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Common;
 public static partial class Util
@@ -37,6 +39,17 @@ public static partial class Util
     public static void GetProperty<TResult>(object input, string propertyName,TResult value)
     {
         input!.GetType().GetProperty(propertyName)!.SetValue(input,value);
+    }
+
+    public static string ConcatUrl(params string[] @params)
+    {
+        var url = string.Concat(@params);
+
+        var pattern = @"(?<!:)/{2}";
+        var replacement = "/";
+        url = Regex.Replace(url, pattern, replacement);
+
+        return url;
     }
 }
 
